@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Alex Anomaly Summary</title>
+    <style>
+        body { font-family: Arial; padding: 30px; }
+        h1 { color: #333; }
+        .section { margin-bottom: 20px; }
+        .flag { background: #f4f4f4; padding: 10px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Anomaly Summary - {{ date }}</h1>
+
+    <div class="section">
+        <h2>🔁 Duplicates</h2>
+        {% for txn in data.duplicates %}
+            <div class="flag">{{ txn.vendor }} | ${{ txn.amount }} | {{ txn.date }}</div>
+        {% else %}
+            <p>No duplicates found.</p>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>⚠️ Unusual Amounts</h2>
+        {% for flag in data.unusual_amounts %}
+            <div class="flag">
+                {{ flag.transaction.vendor }} | ${{ flag.transaction.amount }} |
+                {{ flag.transaction.date }}<br>
+                <em>{{ flag.reason }}</em>
+            </div>
+        {% else %}
+            <p>No unusual amounts found.</p>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>🆕 New Vendors</h2>
+        {% for txn in data.new_vendors %}
+            <div class="flag">{{ txn.vendor }} | ${{ txn.amount }} | {{ txn.date }}</div>
+        {% else %}
+            <p>No new vendors found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
